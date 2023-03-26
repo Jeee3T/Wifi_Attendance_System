@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Attendance Report{% endblock %}
+
+{% block content %}
+  <h1>Attendance Report</h1>
+
+  <table>
+    <tr>
+      <td><strong>Class:</strong></td>
+      <td>{{ attendance_report.class_obj.name }}</td>
+    </tr>
+    <tr>
+      <td><strong>Date:</strong></td>
+      <td>{{ attendance_report.date|date:"F j, Y" }}</td>
+    </tr>
+    <tr>
+      <td><strong>Present Students:</strong></td>
+      <td>
+        {% for student in attendance_report.present_students.all %}
+          {{ student.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+          N/A
+        {% endfor %}
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Absent Students:</strong></td>
+      <td>
+        {% for student in attendance_report.absent_students.all %}
+          {{ student.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+          N/A
+        {% endfor %}
+      </td>
+    </tr>
+  </table>
+{% endblock %}

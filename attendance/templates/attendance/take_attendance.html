@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Take Attendance{% endblock %}
+
+{% block content %}
+  <h1>Take Attendance for {{ class_obj.name }}</h1>
+
+  <form method="post" action="{% url 'attendance:take_attendance' class_obj.pk %}">
+    {% csrf_token %}
+    <table>
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Present</th>
+          <th>Absent</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+          <tr>
+            <td>{{ student.name }}</td>
+            <td><input type="radio" name="{{ student.pk }}" value="present"></td>
+            <td><input type="radio" name="{{ student.pk }}" value="absent"></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}

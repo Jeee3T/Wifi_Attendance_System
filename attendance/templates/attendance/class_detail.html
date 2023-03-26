@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ class_obj.name }}{% endblock %}
+
+{% block content %}
+  <h1>{{ class_obj.name }}</h1>
+  <p>{{ class_obj.description }}</p>
+
+  <h2>Students</h2>
+  <ul>
+    {% for student in students %}
+      <li>{{ student.name }}</li>
+    {% empty %}
+      <li>No students in this class yet.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Take Attendance</h2>
+  <form method="post" action="{% url 'attendance:take_attendance' class_obj.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Attendance Reports</h2>
+  <ul>
+    {% for report in reports %}
+      <li><a href="{% url 'attendance:attendance_report' report.pk %}">{{ report.date }}</a></li>
+    {% empty %}
+      <li>No attendance reports yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

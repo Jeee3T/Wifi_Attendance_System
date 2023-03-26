@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ student.name }}{% endblock %}
+
+{% block content %}
+  <h1>{{ student.name }}</h1>
+
+  <h2>Classes</h2>
+  <ul>
+    {% for class_obj in classes %}
+      <li><a href="{% url 'attendance:class_detail' class_obj.pk %}">{{ class_obj.name }}</a></li>
+    {% empty %}
+      <li>This student is not enrolled in any classes.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Attendance Reports</h2>
+  <ul>
+    {% for report in reports %}
+      <li><a href="{% url 'attendance:attendance_report' report.pk %}">{{ report.date }}</a></li>
+    {% empty %}
+      <li>No attendance reports yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

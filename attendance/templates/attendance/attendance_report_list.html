@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Attendance Report{% endblock %}
+
+{% block content %}
+  <h1>Attendance Report</h1>
+
+  {% if attendance_reports %}
+    <table>
+      <thead>
+        <tr>
+          <th>Class</th>
+          <th>Date</th>
+          <th>Present Students</th>
+          <th>Absent Students</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in attendance_reports %}
+          <tr>
+            <td>{{ report.class_obj.name }}</td>
+            <td>{{ report.date|date:"F j, Y" }}</td>
+            <td>
+              {% for student in report.present_students.all %}
+                {{ student.name }}{% if not forloop.last %}, {% endif %}
+              {% empty %}
+                N/A
+              {% endfor %}
+            </td>
+            <td>
+              {% for student in report.absent_students.all %}
+                {{ student.name }}{% if not forloop.last %}, {% endif %}
+              {% empty %}
+                N/A
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No attendance reports found.</p>
+  {% endif %}
+{% endblock %}

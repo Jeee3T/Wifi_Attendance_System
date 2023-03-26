@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Class List{% endblock %}
+
+{% block content %}
+  <h1>Classes</h1>
+  <ul>
+    {% for class_obj in class_list %}
+      <li><a href="{% url 'attendance:class_detail' class_obj.pk %}">{{ class_obj.name }}</a></li>
+    {% empty %}
+      <li>No classes yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

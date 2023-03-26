@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Attendance System{% endblock %}</title>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="{% url 'attendance:home' %}">Home</a></li>
+      <li><a href="{% url 'attendance:class_list' %}">Create Class</a></li>
+      <li><a href="{% url 'attendance:attendance_report_list' %}">Attendance Report</a></li>
+    </ul>
+  </nav>
+  
+  {% block content %}
+  {% endblock %}
+  
+</body>
+</html>
