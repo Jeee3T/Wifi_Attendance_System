@@ -7,6 +7,7 @@ from django.contrib import messages
 # from django.views.generic.detail import DetailView
 from .models import Class, Student, AttendanceForm, AttendanceReport
 from .forms import AttendanceForm
+from django.views.generic.edit import FormView
 
 
 class IndexView(generic.ListView):
@@ -61,7 +62,7 @@ class StudentDetailView(generic.DetailView):
         context['attendance_reports'] = attendance_reports
         return context
 
-class TakeAttendanceView(generic.FormView):
+class TakeAttendanceView(FormView):
     """View to take attendance for a class."""
 
     template_name = 'attendance/take_attendance.html'
@@ -69,7 +70,7 @@ class TakeAttendanceView(generic.FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        class_id = self.kwargs['class_id']
+        class_id = self.kwargs['id']
         class_obj = get_object_or_404(Class, id=class_id)
         kwargs['class_obj'] = class_obj
         return kwargs

@@ -14,7 +14,7 @@ class Class(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this class."""
-        return reverse('class-detail', args=[str(self.id)])
+        return reverse('class_detail', args=[str(self.id)])
 
 class Student(models.Model):
     """Model representing a student."""
@@ -25,11 +25,11 @@ class Student(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.last_name}, {self.first_name}'
+        return f'{self.first_name} {self.last_name}'
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this student."""
-        return reverse('student-detail', args=[str(self.id)])
+        return reverse('student_detail', args=[str(self.id)])
 
 class AttendanceForm(models.Model):
     """Model representing a student's attendance for a particular class on a particular day."""

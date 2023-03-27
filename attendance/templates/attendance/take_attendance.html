@@ -3,7 +3,7 @@
 {% block title %}Take Attendance{% endblock %}
 
 {% block content %}
-  <h1>Take Attendance for {{ class_obj.name }}</h1>
+  <h1>Take Attendance for BCA</h1>
 
   <form method="post" action="{% url 'attendance:take_attendance' class_obj.pk %}">
     {% csrf_token %}
@@ -18,7 +18,7 @@
       <tbody>
         {% for student in students %}
           <tr>
-            <td>{{ student.name }}</td>
+            <td>{{ student.first_name }}</td>
             <td><input type="radio" name="{{ student.pk }}" value="present"></td>
             <td><input type="radio" name="{{ student.pk }}" value="absent"></td>
           </tr>

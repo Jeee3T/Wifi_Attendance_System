@@ -9,14 +9,15 @@
   <h2>Students</h2>
   <ul>
     {% for student in students %}
-      <li>{{ student.name }}</li>
+      <li id="name">{{ student.first_name }} {{ student.last_name }}</li>
     {% empty %}
       <li>No students in this class yet.</li>
     {% endfor %}
   </ul>
+  
 
   <h2>Take Attendance</h2>
-  <form method="post" action="{% url 'attendance:take_attendance' class_obj.pk %}">
+  <form action="{% url 'attendance:take_attendance' class_obj.pk %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>
@@ -30,4 +31,5 @@
       <li>No attendance reports yet.</li>
     {% endfor %}
   </ul>
-{% endblock %}
+
+  {% endblock %}
