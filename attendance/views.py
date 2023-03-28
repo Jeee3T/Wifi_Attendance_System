@@ -3,12 +3,10 @@ from django.views import generic
 from django.contrib import messages
 # from django.contrib.auth.mixins import LoginRequiredMixin
 # from django.contrib.auth.decorators import login_required
-# from django.utils.decorators import method_decorator
-# from django.views.generic.detail import DetailView
-from .models import Class, Student, AttendanceForm, AttendanceReport
+from .models import Class, Student, AttendanceForm, AttendanceReport, WifiRouter
 from .forms import AttendanceForm
 from django.views.generic.edit import FormView
-
+from scapy.all import *
 
 class IndexView(generic.ListView):
     """View function for home page of site."""
@@ -26,20 +24,30 @@ class ClassListView(generic.ListView):
 
 class ClassDetailView(generic.DetailView):
     """View to display details of a class."""
-
     model = Class
     template_name = 'attendance/class_detail.html'
     context_object_name = 'class_obj'
 
+    def checkMac():
+        wifi_router = WifiRouter.objects.get(pk=1)
+        wifi_mac_address = wifi_router.mac_address
+        ip = conf.route.route()[2]
+        mac = getmacbyip(ip).upper()
+        return (mac==wifi_mac_address)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        class_obj = self.get_object()
-        students = class_obj.students.all()
-        attendance_report_dates = AttendanceReport.objects.filter(class_name=class_obj).values_list(flat=True)
-        context['students'] = students
-        context['attendance_report_dates'] = attendance_report_dates
-        return context
-
+        if ClassDetailView.checkMac():
+            print("Connected")
+            class_obj = self.get_object()
+            students = class_obj.students.all()
+            attendance_report_dates = AttendanceReport.objects.filter(class_name=class_obj).values_list(flat=True)
+            context['students'] = students
+            context['attendance_report_dates'] = attendance_report_dates
+            return context
+        else:
+            print("Not Connected")
+            return context
 
 class StudentListView(generic.ListView):
     """View function for student list page."""
@@ -61,7 +69,7 @@ class StudentDetailView(generic.DetailView):
         attendance_reports = student_obj.attendance_reports.all()
         context['attendance_reports'] = attendance_reports
         return context
-
+    
 class TakeAttendanceView(FormView):
     """View to take attendance for a class."""
 
@@ -92,8 +100,6 @@ class TakeAttendanceView(FormView):
         messages.success(self.request, 'Attendance taken successfully!')
         return redirect('class_detail', pk=class_obj.pk)
 
-
-# @method_decorator(login_required, name='dispatch')
 class AttendanceReportListView(generic.TemplateView):
     """View function for displaying attendance report."""
 
@@ -166,3 +172,4 @@ class AttendanceReportDetailView(generic.DetailView):
         context['percentage'] = percentage
 
         return context
+    

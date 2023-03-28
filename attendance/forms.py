@@ -1,13 +1,11 @@
 from django import forms
-from .models import Student
+from django.forms import formset_factory
+from .models import AttendanceForm
 
-class AttendanceForm(forms.Form):
-    students = forms.ModelMultipleChoiceField(
-        queryset=Student.objects.all(),
-        widget=forms.CheckboxSelectMultiple(),
-        label='Present students'
-    )
 
-    def __init__(self, class_, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['students'].queryset = class_.students.all()
+class AttendanceFormForm(forms.ModelForm):
+    class Meta:
+        model = AttendanceForm
+        fields = ('status',)
+
+AttendanceFormFormSet = formset_factory(AttendanceFormForm, extra=0)

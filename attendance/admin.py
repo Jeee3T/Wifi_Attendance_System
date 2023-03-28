@@ -16,5 +16,12 @@ class adminStudent(admin.ModelAdmin):
         if instance._classes.all():
             return list(instance._classes.all().values_list())
 
+class Router(admin.ModelAdmin):
+    def returnValue():
+        return ['id', 'mac_address']
+    
+    returnValue()
+
 admin.site.register(Class, adminClass)
 admin.site.register(Student, adminStudent)
+admin.site.register(WifiRouter, Router)

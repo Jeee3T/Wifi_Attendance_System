@@ -36,6 +36,7 @@ class AttendanceForm(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     taken_by = models.ForeignKey(User, on_delete=models.CASCADE)
     class_name = models.ForeignKey(Class, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
     date = models.DateField(default=timezone.now, null=True, blank=True)
     present = models.BooleanField(default=False)
 
@@ -58,3 +59,9 @@ class AttendanceReport(models.Model):
 
     class Meta:
         unique_together = ('attendance_form', 'student', 'class_name', 'status', 'start_date', 'end_date')
+
+class WifiRouter(models.Model):
+    mac_address = models.CharField(max_length=17)
+
+    def __str__(self):
+        return self.mac_address
