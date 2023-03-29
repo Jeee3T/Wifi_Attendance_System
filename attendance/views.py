@@ -7,6 +7,8 @@ from .models import Class, Student, AttendanceForm, AttendanceReport, WifiRouter
 from .forms import AttendanceForm
 from django.views.generic.edit import FormView
 from scapy.all import *
+from urllib.request import urlopen
+import re as r
 
 class IndexView(generic.ListView):
     """View function for home page of site."""
@@ -31,7 +33,7 @@ class ClassDetailView(generic.DetailView):
     def checkMac():
         wifi_router = WifiRouter.objects.get(pk=1)
         wifi_mac_address = wifi_router.mac_address
-        ip = conf.route.route()[2]
+        ip = conf.route.route("0.0.0.0")[2]
         mac = getmacbyip(ip).upper()
         return (mac==wifi_mac_address)
 
@@ -40,6 +42,7 @@ class ClassDetailView(generic.DetailView):
         if ClassDetailView.checkMac():
             print("Connected")
             class_obj = self.get_object()
+            print(class_obj, type(class_obj))
             students = class_obj.students.all()
             attendance_report_dates = AttendanceReport.objects.filter(class_name=class_obj).values_list(flat=True)
             context['students'] = students
