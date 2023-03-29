@@ -31,7 +31,7 @@ class ClassDetailView(generic.DetailView):
     def checkMac():
         wifi_router = WifiRouter.objects.get(pk=1)
         wifi_mac_address = wifi_router.mac_address
-        ip = conf.route.route()[2]
+        ip = conf.route.route("0.0.0.0")[2]
         mac = getmacbyip(ip).upper()
         return (mac==wifi_mac_address)
 
