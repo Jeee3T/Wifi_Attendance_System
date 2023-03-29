@@ -40,16 +40,13 @@ class ClassDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if ClassDetailView.checkMac():
-            print("Connected")
             class_obj = self.get_object()
-            print(class_obj, type(class_obj))
             students = class_obj.students.all()
             attendance_report_dates = AttendanceReport.objects.filter(class_name=class_obj).values_list(flat=True)
             context['students'] = students
             context['attendance_report_dates'] = attendance_report_dates
             return context
         else:
-            print("Not Connected")
             return context
 
 class StudentListView(generic.ListView):
